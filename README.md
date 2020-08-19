@@ -25,7 +25,7 @@ To get the project :
   
 ##### Clone the repository:  
  ```bash 
- https://github.com/cynthiaoduol/project-awwards.git 
+ https://github.com/sarahsindet/awwwards.git 
 ```
 
 ##### Install and activate Virtual  
