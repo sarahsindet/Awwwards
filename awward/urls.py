@@ -13,25 +13,28 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url
+from django.conf.urls import url,include
 from django.contrib import admin
-from . import views
-from django.conf import settings
-from django.conf.urls import url
 from django.conf.urls.static import static
+from django.contrib.auth import views
+from rest_framework import routers
+from projects import views as view
+from projects.views import ProfileViewSet,PostViewSet
+
+
+
+
+router = routers.DefaultRouter()
+router.register(r'profiles',view.ProfileViewSet)
+router.register(r'posts', view.PostViewSet)
+
 
 urlpatterns = [
-    url(r'^$',views.index,name='index'),
-    url(r'^create/profile$',views.create_profile, name='create-profile'),
-    url(r'^new/project$',views.new_project, name='new-project'),
-    url(r'^directory/',views.directory, name='directory'),
-    url(r'^profile/',views.profile, name='profile'),
-    url(r'^user/(?P<username>\w{0,50})',views.user_profile,name='user-profile'),
-    url(r'^site/(\d+)',views.site,name='site'),
-    url(r'^search/',views.search_results, name='search_results'),
+    url(r'^admin/', admin.site.urls),
+    url(r'^api/',include(router.urls)),
+    url(r'',include('projects.urls')),
+    url(r'^accounts/',include('registration.backends.simple.urls')),
+    url(r'^logout/$',views.logout, {"next_page":'/'},name="logout"),
+    url(r'api-auth/', include('rest_framework.urls',namespace='rest_framework')),
     
-
 ]
-
-if settings.DEBUG:
-    urlpatterns+= static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
